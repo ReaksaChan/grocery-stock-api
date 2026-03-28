@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EWingshopApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication     .run(EWingshopApiApplication.class, args);
+		SpringApplication.run(EWingshopApiApplication.class, args);
 	}
 
 }
