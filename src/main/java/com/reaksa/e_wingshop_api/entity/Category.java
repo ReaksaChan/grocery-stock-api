@@ -2,7 +2,9 @@ package com.reaksa.e_wingshop_api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,6 +22,17 @@ public class Category {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-//    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-//    private List<Product> products;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Product> products;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @CreationTimestamp
+    @Column(name = "updated_at", updatable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "is_deleted") private boolean isDeleted = false;
+    private LocalDateTime deletedAt;
 }
