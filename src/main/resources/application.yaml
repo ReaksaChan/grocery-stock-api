@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: dev
+
   datasource:
     url: jdbc:postgresql://localhost:5432/grocery_stock_db
     username: ${DB_USERNAME}
