@@ -52,14 +52,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/branches/**").permitAll()
 
                         // Role-specific
-                        .requestMatchers("/api/v1/admin/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers("/api/v1/inventory/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers("/api/v1/reports/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("OWNER")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/branches/**").hasRole("OWNER")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/branches/**").hasRole("OWNER")
+                        .requestMatchers("/api/v1/admin/**").hasAnyRole("SUPERADMIN", "MANAGER")
+                        .requestMatchers("/api/v1/inventory/**").hasAnyRole("SUPERADMIN", "MANAGER")
+                        .requestMatchers("/api/v1/reports/**").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAnyRole("SUPERADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyRole("SUPERADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/branches/**").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/branches/**").hasRole("SUPERADMIN")
 
                         // Customers + staff
                         .requestMatchers("/api/v1/orders/**").authenticated()
