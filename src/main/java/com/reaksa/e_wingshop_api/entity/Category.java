@@ -32,7 +32,4 @@ public class Category {
     @CreationTimestamp
     @Column(name = "updated_at", updatable = false)
     private LocalDateTime updatedAt;
-
-    @Column(name = "is_deleted") private boolean isDeleted = false;
-    private LocalDateTime deletedAt;
 }
