@@ -1,6 +1,7 @@
 package com.reaksa.e_wingshop_api.service;
 
 import com.reaksa.e_wingshop_api.dto.request.ProductRequest;
+import com.reaksa.e_wingshop_api.dto.response.ProductResponse;
 import com.reaksa.e_wingshop_api.entity.Category;
 import com.reaksa.e_wingshop_api.entity.Product;
 import com.reaksa.e_wingshop_api.exception.DuplicateResourceException;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +23,21 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public Page<Product> search(Long categoryId, String keyword, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return productRepository.search(categoryId, keyword, pageable);
+    public Page<ProductResponse> search(Long categoryId, String keyword, int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = size <= 0 ? 20 : Math.min(size, 200);
+        Pageable pageable = PageRequest.of(safePage, safeSize);
+        Page<Product> products;
+        if (keyword == null || keyword.trim().isEmpty()) {
+            if (categoryId == null) {
+                products = productRepository.findByIsActiveOrderByIdDesc(true, pageable);
+            } else {
+                products = productRepository.findByCategoryIdAndIsActiveOrderByIdDesc(categoryId, true, pageable);
+            }
+        } else {
+            products = productRepository.searchByKeyword(categoryId, keyword.trim(), pageable);
+        }
+        return products.map(ProductResponse::from);
     }
 
     @Transactional(readOnly = true)

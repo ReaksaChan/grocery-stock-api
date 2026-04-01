@@ -3,7 +3,6 @@ package com.reaksa.e_wingshop_api.controller;
 import com.reaksa.e_wingshop_api.dto.request.ProductRequest;
 import com.reaksa.e_wingshop_api.dto.response.PageResponse;
 import com.reaksa.e_wingshop_api.dto.response.ProductResponse;
-import com.reaksa.e_wingshop_api.entity.Product;
 import com.reaksa.e_wingshop_api.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +26,7 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
 
-        Page<ProductResponse> result = productService
-            .search(categoryId, keyword, page, size)
-            .map(ProductResponse::from);
+        Page<ProductResponse> result = productService.search(categoryId, keyword, page, size);
         return ResponseEntity.ok(PageResponse.of(result));
     }
 
