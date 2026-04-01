@@ -23,6 +23,15 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
+    @GetMapping
+    public ResponseEntity<PageResponse<InventoryResponse>> listAllStock(
+            @RequestParam(required = false) Long branchId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        Page<InventoryResponse> result = inventoryService.findAllStock(branchId, page, size);
+        return ResponseEntity.ok(PageResponse.of(result));
+    }
+
     @GetMapping("/branch/{branchId}")
     public ResponseEntity<PageResponse<InventoryResponse>> getByBranch(
             @PathVariable Long branchId,

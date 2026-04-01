@@ -1,5 +1,6 @@
 package com.reaksa.e_wingshop_api.service;
 
+import com.reaksa.e_wingshop_api.dto.response.InventoryResponse;
 import com.reaksa.e_wingshop_api.dto.request.InventoryRequest;
 import com.reaksa.e_wingshop_api.entity.Branch;
 import com.reaksa.e_wingshop_api.entity.Inventory;
@@ -31,6 +32,15 @@ public class InventoryService {
     private final ProductRepository productRepository;
 
     // ── Read ──────────────────────────────────────────────────────────
+
+    @Transactional(readOnly = true)
+    public Page<InventoryResponse> findAllStock(Long branchId, int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = size <= 0 ? 20 : Math.min(size, 200);
+        Pageable pageable = PageRequest.of(safePage, safeSize);
+        return inventoryRepository.findAllStock(branchId, pageable)
+                .map(InventoryResponse::from);
+    }
 
     @Transactional(readOnly = true)
     public Page<Inventory> findByBranch(Long branchId, int page, int size) {

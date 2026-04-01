@@ -18,6 +18,21 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     Page<Inventory> findByBranchId(Long branchId, Pageable pageable);
 
+    @Query(
+        value = """
+            SELECT i FROM Inventory i
+            JOIN FETCH i.product p
+            JOIN FETCH i.branch b
+            WHERE (:branchId IS NULL OR b.id = :branchId)
+            ORDER BY i.updatedAt DESC, i.id DESC
+            """,
+        countQuery = """
+            SELECT COUNT(i) FROM Inventory i
+            WHERE (:branchId IS NULL OR i.branch.id = :branchId)
+            """
+    )
+    Page<Inventory> findAllStock(@Param("branchId") Long branchId, Pageable pageable);
+
     // Low stock: quantity at or below threshold
     @Query("""
         SELECT i FROM Inventory i
@@ -61,4 +76,12 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     int decrementQuantity(@Param("branchId") Long branchId,
                           @Param("productId") Long productId,
                           @Param("delta") int delta);
+
+    @Query("""
+        SELECT COUNT(i) FROM Inventory i
+        WHERE i.quantity < :threshold
+        AND (:branchId IS NULL OR i.branch.id = :branchId)
+        """)
+    Long countByQuantityBelow(@Param("threshold") Integer threshold,
+                              @Param("branchId") Long branchId);
 }
