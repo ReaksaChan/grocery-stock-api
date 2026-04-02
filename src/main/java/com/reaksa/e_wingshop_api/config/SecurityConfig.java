@@ -27,7 +27,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtFilter;
@@ -54,7 +54,7 @@ public class SecurityConfig {
                         // Role-specific
                         .requestMatchers("/api/v1/admin/**").hasAnyRole("SUPERADMIN", "MANAGER")
                         .requestMatchers("/api/v1/inventory/**").hasAnyRole("SUPERADMIN", "MANAGER")
-                        .requestMatchers("/api/v1/reports/**").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers("/api/v1/reports/**").hasAnyRole("SUPERADMIN", "MANAGER")
                         .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAnyRole("SUPERADMIN", "MANAGER")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyRole("SUPERADMIN", "MANAGER")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("SUPERADMIN")

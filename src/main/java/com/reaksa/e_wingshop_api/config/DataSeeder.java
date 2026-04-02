@@ -49,6 +49,7 @@ public class DataSeeder implements ApplicationRunner {
 
         List<User>     users      = seedUsers();
         List<Branch>   branches   = seedBranches();
+        assignManagerBranches(users, branches);
         List<Category> categories = seedCategories();
         List<Product>  products   = seedProducts(categories);
         seedInventories(branches, products);
@@ -92,6 +93,13 @@ public class DataSeeder implements ApplicationRunner {
                 "No. 200, National Road 6A, Sen Sok, Phnom Penh",
                 new BigDecimal("11.59840000"), new BigDecimal("104.89550000"), "+85523456003")
         ));
+    }
+
+    private void assignManagerBranches(List<User> users, List<Branch> branches) {
+        if (users.size() < 3 || branches.size() < 2) return;
+        users.get(1).setManagedBranch(branches.get(0));
+        users.get(2).setManagedBranch(branches.get(1));
+        userRepository.saveAll(List.of(users.get(1), users.get(2)));
     }
 
     // ── Categories ────────────────────────────────────────────────────

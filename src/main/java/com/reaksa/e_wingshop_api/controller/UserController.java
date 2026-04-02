@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class UserController {
     public ResponseEntity<User> createStaff(@Valid @RequestBody CreateStaffRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.createStaff(req.fullName, req.email,
-                        req.password, req.phone, req.role));
+                        req.password, req.phone, req.role, req.branchId));
     }
 
     // ── Owner — change role ───────────────────────────────────────────
@@ -59,6 +60,14 @@ public class UserController {
                                             @RequestBody Map<String, String> body) {
         RoleName role = RoleName.valueOf(body.get("role").toUpperCase());
         return ResponseEntity.ok(userService.changeRole(id, role));
+    }
+
+    // ── Owner — assign a user as branch manager ──────────────────────
+    @PatchMapping("/{id}/manager-branch")
+    @PreAuthorize("hasRole('SUPERADMIN')")
+    public ResponseEntity<User> assignManagerBranch(@PathVariable Long id,
+                                                    @Valid @RequestBody AssignManagerBranchRequest req) {
+        return ResponseEntity.ok(userService.assignManagerToBranch(id, req.branchId));
     }
 
     // ── Owner/Admin — reset password ──────────────────────────────────
@@ -88,11 +97,17 @@ public class UserController {
 
     // ── Inner DTO ─────────────────────────────────────────────────────
     @Data
-    static class CreateStaffRequest {
+    public static class CreateStaffRequest {
         @NotBlank @Size(max = 100) String fullName;
         @NotBlank @Email           String email;
         @NotBlank @Size(min = 8)   String password;
         String phone;
         @NotNull                   RoleName role;
+        Long branchId;
+    }
+
+    @Data
+    public static class AssignManagerBranchRequest {
+        @NotNull @Positive Long branchId;
     }
 }

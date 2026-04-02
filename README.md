@@ -58,6 +58,7 @@ Authorization: Bearer <access_token>
 | GET    | `/{id}`           | —                                     | Public        |
 | GET    | `/barcode/{code}` | —                                     | Public        |
 | POST   | `/`               | `ProductRequest`                      | OWNER / ADMIN |
+| POST   | `/with-stock`     | `ProductWithStockRequest`             | OWNER / ADMIN |
 | PUT    | `/{id}`           | `ProductRequest`                      | OWNER / ADMIN |
 | DELETE | `/{id}`           | —                                     | OWNER         |
 
@@ -82,6 +83,7 @@ Authorization: Bearer <access_token>
 |--------|------------------------|--------------------------------------------------|
 | GET    | `/branch/{branchId}`   | `?page&size`                                     |
 | POST   | `/`                    | `InventoryRequest`                               |
+| POST   | `/add-stock`           | `AddStockRequest` (increment stock)              |
 | PATCH  | `/adjust`              | `?branchId&productId&delta&reason`               |
 | POST   | `/transfer`            | `?fromBranchId&toBranchId&productId&quantity`    |
 | GET    | `/low-stock`           | `?branchId`                                      |
