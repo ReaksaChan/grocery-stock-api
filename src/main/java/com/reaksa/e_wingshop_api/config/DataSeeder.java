@@ -24,7 +24,7 @@ import java.util.List;
  * Execution order = 2 (after DataInitializer which seeds roles at order 1).
  */
 @Component
-@Profile({"dev", "test"})
+//@Profile({"dev", "test"})
 @Order(2)
 @RequiredArgsConstructor
 @Slf4j
