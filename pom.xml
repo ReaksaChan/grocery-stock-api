@@ -130,13 +130,14 @@
 						<image>eclipse-temurin:21-jre-alpine</image>
 					</from>
 					<to>
-						<image>ghcr.io/reaksarabbit/groccery-stock-api</image>
+						<image>ghcr.io/reaksachan/groccery-stock-api:latest</image>
 						<tags>
 							<tag>latest</tag>
 							<tag>${project.version}</tag>
 						</tags>
 					</to>
 					<container>
+<!--						<mainClass>com.reaksa.e_wingshop_api.EWingshopApiApplication</mainClass>-->
 						<ports><port>8080</port></ports>
 					</container>
 				</configuration>
@@ -146,8 +147,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>
 				<configuration>
-					<source>21</source>
-					<target>21</target>
+					<release>21</release>
 				</configuration>
 			</plugin>
 			<plugin>
